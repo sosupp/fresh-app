@@ -89,7 +89,6 @@ Artisan::command('order:show', function () {
     }
 
     // Generate CSV file with data
-    $formattedOrders = implode(PHP_EOL, $newOrder);
     $filename = 'today_orders.csv';
     $file = fopen($filename, 'w');
 
@@ -97,6 +96,20 @@ Artisan::command('order:show', function () {
         return "Error opening the file " . $filename;
     }
 
+    // writing heading first
+    $csvHeading = [
+        "orderID","orderDate",
+        "orderItemID","orderItemName",
+        "orderItemQuantity","customerFirstName",
+        "customerLastName","customerAddress",
+        "customerCity", "customerZipCode", "customerEmail \n",
+    ];
+
+    $csvHeading = implode(',', $csvHeading);
+    file_put_contents($filename, $csvHeading);
+
+    // Order data array to csv
+    $formattedOrders = implode(PHP_EOL, $newOrder);
     file_put_contents($filename, $formattedOrders, FILE_APPEND);
 
     $this->info('CSV file for orders generated with the name ' . $filename);
