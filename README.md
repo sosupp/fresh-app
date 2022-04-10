@@ -1,64 +1,36 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400"></a></p>
+## In this README
+1. The Task
+2. Process
+3. Solutions
+4. How to test the solution
 
-<p align="center">
-<a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+## The Task
+To create a command line script which will read orders and customers data from an API and generate 
+a CSV file following the schema below (one CSV row for each order item):
 
-## About Laravel
+orderID, orderDate, orderItemID, orderItemName, orderItemQuantity, customerFirstName, 
+customerLastName, customerAddress, customerCity, customerZipCode, customerEmail
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## Process
+Laravel was used for this. To accomplish this task three main activities were considered:
+1. Setup a custom console command in laravel to run the script
+2. Fetching and reading data from the three API endpoints provided (orders, items and customers)
+3. Combining the three set of data using the relatatioship data exist between them because the end result is to retrieve columns of data spread across these three endpoints.
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## Solution - Setting up the custom command script
+2. For simplicity I used the closure commands instead of the full fledge class commands (provided by laravel)
+3. The command signature used is #order:show 
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+## Solution - Fetching and Combining Data
+1. I used the Http facade support from laravel to fetch the APIs and converted them to arrays (which are multi-dimentional) calling the json() method on each of the response. These were saved into $orders, $items and $customers arrays.
+2. I created a combineData() function to combine the three sets of array based on existing relationships identified in the data. This resulted into one big array.
+3. To retrieve the needed columns, I used nested foreach() to loop over the array to extract the specific details needed and saved that as a new simple index array saved as $newOrder
+4. To Generate a CSV file, each item in the $newOrder is formatted into a string as comma separated and the file_puts_contents() function is used to write to the todays_order.csv file.
 
-## Learning Laravel
+## How to test the solution
+1. The main code is written in console.php which you can locate at routes/console.php
+2. run the laravel artisan command: php artisan order:show (while you're in the project directory)
+3. The generated csv file is named today_orders.csv located at the root directory. 
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 2000 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
-
-## Laravel Sponsors
-
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
-
-### Premium Partners
-
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[OP.GG](https://op.gg)**
-- **[WebReinvent](https://webreinvent.com/?utm_source=laravel&utm_medium=github&utm_campaign=patreon-sponsors)**
-- **[Lendio](https://lendio.com)**
-
-## Contributing
-
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
-
-## Code of Conduct
-
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
-
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
-
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+Thank you. 
