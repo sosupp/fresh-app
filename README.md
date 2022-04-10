@@ -23,13 +23,13 @@ Laravel was used for this. To accomplish this task three main activities were co
 
 ## Solution - Fetching and Combining Data
 1. I used the Http facade support from laravel to fetch the APIs and converted them to arrays (which are multi-dimentional) calling the json() method on each of the response. These were saved into $orders, $items and $customers arrays.
-2. I created a combineData() function to combine the three sets of array based on existing relationships identified in the data. This resulted into one big array.
+2. I created a combineData() function to combine the three sets of arrays based on existing relationships identified in the data. This resulted into one big array.
 3. To retrieve the needed columns, I used nested foreach() to loop over the array to extract the specific details needed and saved that as a new simple index array saved as $newOrder
-4. To Generate a CSV file, each item in the $newOrder is formatted into a string as comma separated and the file_puts_contents() function is used to write to the todays_order.csv file.
+4. To Generate a CSV file, each item in the $newOrder is formatted into a string as a comma separated and the file_puts_contents() function is used to write to the todays_order.csv file.
 
 ## How to test the solution
 1. The main code is written in console.php which you can locate at routes/console.php
-2. run the laravel artisan command: php artisan order:show (while you're in the project directory)
+2. run the custom laravel artisan command: php artisan order:show (while you're in the project directory from the CLI)
 3. The generated csv file is named today_orders.csv located at the root directory. 
 
 
