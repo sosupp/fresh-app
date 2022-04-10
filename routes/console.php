@@ -16,10 +16,6 @@ use Illuminate\Support\Facades\Artisan;
 |
 */
 
-// Artisan::command('inspire', function () {
-//     $this->comment(Inspiring::quote());
-// })->purpose('Display an inspiring quote');
-
 
 Artisan::command('order:show', function () {
 
@@ -70,44 +66,27 @@ Artisan::command('order:show', function () {
     $newOrder = [];
 
     foreach ($ordersToday as $key1 => $value1) {
-        // $newOrder[] =
         foreach($value1 as $key2 => $value2){
 
             if(is_array($value2)){
                 foreach($value2 as $key3 => $value3){
                     $newOrder[] .=
-                            $value1['id'] . ', ' .
-                            $value1 ['createdAt'] . ', ' .
-                            $value1['items'][$key3]['id'] . ', ' .
-                            $value1['items'][$key3]['name'] . ', ' .
-                            $value1['items'][$key3]['quantity'] . ', ' .
-                            $value1['customer'][0]['firstName'] . ', ' .
-                            $value1['customer'][0]['lastName'] . ', ' .
-                            $value1['customer'][0]['addresses'][0]['address'] . ', ' .
-                            $value1['customer'][0]['addresses'][0]['city'] . ', ' .
-                            $value1['customer'][0]['addresses'][0]['zip'] . ', ' .
-                            $value1['customer'][0]['email'] . ', ' ;
-
-                    if(is_array($value3)){
-                        foreach($value3 as $key4 => $value4){
-                            // $value['customer'][0]['addresses'][0]['city'] . ', ' .
-                            // $value['customer'][0]['addresses'][0]['zip'] . ', ' .
-                            // $value['customer'][0]['email'];
-                        }
-                    }
+                        $value1['id'] . ', ' .
+                        $value1 ['createdAt'] . ', ' .
+                        $value1['items'][$key3]['id'] . ', ' .
+                        $value1['items'][$key3]['name'] . ', ' .
+                        $value1['items'][$key3]['quantity'] . ', ' .
+                        $value1['customer'][0]['firstName'] . ', ' .
+                        $value1['customer'][0]['lastName'] . ', ' .
+                        $value1['customer'][0]['addresses'][0]['address'] . ', ' .
+                        $value1['customer'][0]['addresses'][0]['city'] . ', ' .
+                        $value1['customer'][0]['addresses'][0]['zip'] . ', ' .
+                        $value1['customer'][0]['email'] . ', ' ;
                 }
             }
         }
 
     }
-
-    $csvHeading = [
-        'orderID','orderDate',
-        'orderItemID','orderItemName',
-        'orderItemQuantity','customerFirstName',
-        'customerLastName','customerAddress',
-        'customerCity','customerZipCode','customerEmail',
-    ];
 
     // Generate CSV file with data
     $formattedOrders = implode(PHP_EOL, $newOrder);
